@@ -1,17 +1,3 @@
-# PyTorch GPT-2
-
-[![Travis](https://travis-ci.org/CyberZHG/torch-gpt-2.svg)](https://travis-ci.org/CyberZHG/torch-gpt-2)
-[![Coverage](https://coveralls.io/repos/github/CyberZHG/torch-gpt-2/badge.svg?branch=master)](https://coveralls.io/github/CyberZHG/torch-gpt-2)
-
-## Install
-
-```bash
-pip install torch-gpt-2
-```
-
-## Demo
-
-```python
 import os
 import sys
 from torch_gpt_2 import load_trained_model_from_checkpoint, get_bpe_from_files, generate
@@ -34,9 +20,8 @@ net = load_trained_model_from_checkpoint(config_path, checkpoint_path)
 print('Load BPE from files...')
 bpe = get_bpe_from_files(encoder_path, vocab_path)
 print('Generate text...')
-output = generate(net, bpe, ['From the day forth, my arm'], length=20, top_k=1)
+output = generate(net, bpe, ['From the day forth, my arm'], length=20, top_k=40)
 
 # If you are using the 117M model and top_k equals to 1, then the result would be:
 # "From the day forth, my arm was broken, and I was in a state of pain. I was in a state of pain,"
 print(output[0])
-```

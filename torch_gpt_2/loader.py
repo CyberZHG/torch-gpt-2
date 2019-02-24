@@ -51,7 +51,7 @@ def load_trained_model_from_checkpoint(config_path,
     net.embedding.weight = nn.Parameter(loader('model/wte:0'))
     net.position_embedding.weight = nn.Parameter(loader('model/wpe:0')[:seq_len, :])
     for i in range(config['n_layer']):
-        layer = net.encoder._modules['encoder_%d' % i]
+        layer = net.encoder.components[i]
 
         layer.attention.normal.gamma = nn.Parameter(loader('model/h%d/ln_1/g:0' % i))
         layer.attention.normal.beta = nn.Parameter(loader('model/h%d/ln_1/b:0' % i))

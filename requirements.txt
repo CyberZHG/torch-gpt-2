@@ -3,7 +3,7 @@ torchvision
 torch-position-embedding==0.7.1
 torch-layer-normalization==0.10.2
 torch-multi-head-attention==0.15.1
-torch-embed-sim==0.3.1
-torch-transformer==0.18.0
+torch-embed-sim==0.3.2
+torch-transformer==0.18.1
 tensorflow
 keras-gpt-2

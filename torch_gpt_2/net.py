@@ -9,7 +9,7 @@ from torch_transformer import FeedForward
 from torch_embed_sim import EmbeddingSim
 
 
-__all__ = ['GPT_2']
+__all__ = ['GPT_2', 'gelu', 'Encoder', 'EncoderComponent', 'BlockWrapper', 'AttentionWrapper']
 
 
 def gelu(x):
@@ -128,7 +128,9 @@ class GPT_2(nn.Module):
                  n_ctx=1024,
                  n_embd=768,
                  n_head=12,
-                 n_layer=12):
+                 n_layer=12,
+                 attention_activation=None,
+                 feed_forward_activation=gelu):
         """Get basic GPT-2 model.
 
         :param n_vocab: Number of vocabulary tokens.
@@ -136,6 +138,8 @@ class GPT_2(nn.Module):
         :param n_embd: The dimension of embeddings.
         :param n_head: Number of heads in transformer.
         :param n_layer: Number of transformer blocks.
+        :param attention_activation: Activation for attention layer.
+        :param feed_forward_activation: Activation for feed-forward layer.
         :return: The model.
         """
         super(GPT_2, self).__init__()
@@ -146,8 +150,8 @@ class GPT_2(nn.Module):
             hidden_features=n_embd * 4,
             encoder_num=n_layer,
             head_num=n_head,
-            attention_activation=None,
-            feed_forward_activation=gelu,
+            attention_activation=attention_activation,
+            feed_forward_activation=feed_forward_activation,
         )
         self.layer_norm = LayerNormalization(normal_shape=n_embd)
         self.embedding_sim = EmbeddingSim(num_embeddings=n_vocab, bias=False)
