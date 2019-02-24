@@ -53,8 +53,8 @@ def load_trained_model_from_checkpoint(config_path,
     for i in range(config['n_layer']):
         layer = net.encoder._modules['encoder_%d' % i]
 
-        layer.attention.normal_layer.gamma = nn.Parameter(loader('model/h%d/ln_1/g:0' % i))
-        layer.attention.normal_layer.beta = nn.Parameter(loader('model/h%d/ln_1/b:0' % i))
+        layer.attention.normal.gamma = nn.Parameter(loader('model/h%d/ln_1/g:0' % i))
+        layer.attention.normal.beta = nn.Parameter(loader('model/h%d/ln_1/b:0' % i))
 
         attention_weight = loader('model/h%d/attn/c_attn/w:0' % i, True)
         attention_bias = loader('model/h%d/attn/c_attn/b:0' % i)
@@ -67,8 +67,8 @@ def load_trained_model_from_checkpoint(config_path,
         layer.attention.layer.linear_o.weight = nn.Parameter(loader('model/h%d/attn/c_proj/w:0' % i, True))
         layer.attention.layer.linear_o.bias = nn.Parameter(loader('model/h%d/attn/c_proj/b:0' % i))
 
-        layer.feed_forward.normal_layer.gamma = nn.Parameter(loader('model/h%d/ln_2/g:0' % i))
-        layer.feed_forward.normal_layer.beta = nn.Parameter(loader('model/h%d/ln_2/b:0' % i))
+        layer.feed_forward.normal.gamma = nn.Parameter(loader('model/h%d/ln_2/g:0' % i))
+        layer.feed_forward.normal.beta = nn.Parameter(loader('model/h%d/ln_2/b:0' % i))
 
         layer.feed_forward.layer.linear_h.weight = nn.Parameter(loader('model/h%d/mlp/c_fc/w:0' % i, True))
         layer.feed_forward.layer.linear_h.bias = nn.Parameter(loader('model/h%d/mlp/c_fc/b:0' % i))

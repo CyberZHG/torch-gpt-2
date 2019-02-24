@@ -31,10 +31,17 @@ class BlockWrapper(nn.Module):
         super(BlockWrapper, self).__init__()
         self.in_features = in_features
         self.layer = layer
-        self.normal_layer = LayerNormalization(normal_shape=in_features)
+        self.normal = LayerNormalization(normal_shape=in_features, epsilon=1e-16)
 
-    def forward(self, x, *args, **kwargs):
-        return x + self.layer(self.normal_layer(x), *args, **kwargs)
+    def forward(self, x):
+        return x + self.layer(self.normal(x))
+
+
+class AttentionWrapper(BlockWrapper):
+
+    def forward(self, x, mask=None):
+        normal = self.normal(x)
+        return x + self.layer(normal, normal, normal, mask=mask)
 
 
 class EncoderComponent(nn.Module):
@@ -54,7 +61,7 @@ class EncoderComponent(nn.Module):
         :param feed_forward_activation: Activation for feed-forward layer.
         """
         super(EncoderComponent, self).__init__()
-        self.attention = BlockWrapper(
+        self.attention = AttentionWrapper(
             in_features,
             layer=MultiHeadAttention(
                 in_features=in_features,
@@ -73,7 +80,7 @@ class EncoderComponent(nn.Module):
         )
 
     def forward(self, x, mask=None):
-        return self.feed_forward(self.attention(x, x, x, mask=mask))
+        return self.feed_forward(self.attention(x, mask=mask))
 
 
 class Encoder(nn.Module):
